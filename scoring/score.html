@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="">
+  <style>
+    @font-face {
+        font-family: "Lemon Milk";
+        src: url('/assets/fonts/LEMONMILK-Bold.otf') format('truetype')
+    }
+
+    * {
+        color: aliceblue;
+        font-family: "Lemon Milk", sans-serif;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: auto;
+        background-color: #102033;
+        margin: auto;
+    }
+    th, td {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .jeux-player1 {
+        color: #102033;
+        background-color: #d7e648;
+        border-top: 3px solid #102033;
+        border-bottom: 2px solid #102033;
+        border-right: 3px solid #102033;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 0;
+        width: 35px;
+    }
+
+    .jeux-player2 {
+        color: #102033;
+        background-color: #d7e648;
+        border-bottom: 3px solid #102033;
+        border-top: 2px solid #102033;
+        border-right: 3px solid #102033;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 0;
+        width: 35px;
+    }
+
+    th.player-name {
+        text-align: left;
+        width: 150px;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .points-player-1 {
+        background-color: #293f4d;
+        color: #f0f9fa;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 0;
+        width: 40px;
+        border-bottom: 1px solid grey;
+        border-top: 3px solid #293f4d;
+    }
+
+    .points-player-2 {
+        background-color: #293f4d;
+        color: #f0f9fa;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 0;
+        width: 40px;
+        border-bottom: 3px solid #293f4d;
+        border-top: 1px solid grey;
+    }
+
+    .player-name {
+        text-transform: uppercase;
+    }
+
+
+    .case-server {
+        border-right: 10px solid #102033;
+    }
+
+    .server {
+        border-right: 10px solid #d7e648;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .buttont:hover {
+      background-color: #007bff;
+    }
+
+    .buttons-points {
+        text-align: center;
+    }
+
+    .buttons-for-points {
+        width: 200px;
+        height: 200px;
+    }
+
+    .input-field {
+      padding: 5px;
+      font-size: 16px;
+      color: #102033;
+    }
+
+  </style>
+</head>
+<body>
+
+    <table>
+        <tr>
+            <th class="case-server" id="serveur1"></th>
+            <th class="player-name" id="namePlayer1">Player 1</th>
+            <td class="jeux-player1" id="jeuxRemportesJoueur1">0</td>
+            <td class="points-player-1" id="joueur1">0</td>
+        </tr>
+        <tr>
+            <th class="case-server" id="serveur2"></th>
+            <th class="player-name" id="namePlayer2">Player 2</th>
+            <td class="jeux-player2" id="jeuxRemportesJoueur2">0</td>
+            <td class="points-player-2" id="joueur2">0</td>
+        </tr>
+    </table>
+    
+    <div class="buttons-points">
+        <button class="button buttons-for-points " onclick="joueur1Score()">Player 1</button>
+        <button class="button buttons-for-points " onclick="joueur2Score()">Player 2</button>  
+    </div>
+
+    <div class="buttons-points">
+        <button class="button" onclick="P1Serves()">Player 1 Serves</button>
+        <button class="button" onclick="P2Serves()">Player 2 Serves</button>
+    </div>
+
+    <div class="buttons-points">
+        <input type="text" id="inputNamePlayer1" class="input-field" placeholder="Enter Player 1 Name">
+        <button class="button" onclick="changeNamePlayer1()">Change Player 1 Name</button>
+    </div>
+    
+    <div class="buttons-points">
+        <input type="text" id="inputNamePlayer2" class="input-field" placeholder="Enter Player 2 Name">
+        <button class="button" onclick="changeNamePlayer2()">Change Player 2 Name</button>
+    </div>
+      
+      
+<script>
+    var scoreJoueur1 = 0;
+    var scoreJoueur2 = 0;
+    var jeuxRemportesJoueur1 = 0;
+    var jeuxRemportesJoueur2 = 0;
+    var joueurAuService = 1; // Joueur 1 commence le service   
+    var namePlayer1 = "";
+    var namePlayer2 = "";
+
+    function changeNamePlayer1() {
+    var newName = document.getElementById("inputNamePlayer1").value;
+    if (newName.trim() !== "") {
+      namePlayer1 = newName;
+      document.getElementById("namePlayer1").innerText = newName;
+    }
+  }
+
+  function changeNamePlayer2() {
+    var newName = document.getElementById("inputNamePlayer2").value;
+    if (newName.trim() !== "") {
+      namePlayer2 = newName;
+      document.getElementById("namePlayer2").innerText = newName;
+    }
+  }
+  
+    function P1Serves() {
+        document.getElementById("serveur1").classList.add("server");
+        document.getElementById("serveur2").classList.remove("server");
+    }
+    function P2Serves() {
+        document.getElementById("serveur2").classList.add("server");
+        document.getElementById("serveur1").classList.remove("server");
+    }
+
+    function changeService() {
+        if (joueurAuService === 1) {
+            joueurAuService = 2;
+            document.getElementById("serveur2").classList.add("server");
+            document.getElementById("serveur1").classList.remove("server");
+            updateScore();
+        } else if (joueurAuService === 2) { 
+            joueurAuService = 1
+            document.getElementById("serveur1").classList.add("server");
+            document.getElementById("serveur2").classList.remove("server");
+            updateScore();
+        }
+    }
+
+    function joueur1Score() {
+        if (scoreJoueur1 === 3 && scoreJoueur2 === 3) {
+                scoreJoueur1 = 4; // Avantage joueur 1
+            } else if (jeuxRemportesJoueur1 === 6 || jeuxRemportesJoueur2 === 6) {
+                jeuxRemportesJoueur1 === 6;
+            } else if (scoreJoueur1 === 4 && scoreJoueur2 === 3) {
+                scoreJoueur1 = 0; // Jeu gagné
+                scoreJoueur2 = 0;
+                jeuxRemportesJoueur1++;
+                changeService();
+            } else if (scoreJoueur1 === 3 && scoreJoueur2 === 4) {
+                scoreJoueur1 = 3; // Retour a 40-40
+                scoreJoueur2 = 3;
+            } else if (scoreJoueur1 === 3 && scoreJoueur2 !== 3) {
+                scoreJoueur1 = 0; // Gagne le jeu
+                scoreJoueur2 = 0;
+                jeuxRemportesJoueur1++;
+                changeService();
+            } else if (jeuxRemportesJoueur1 < 6 || jeuxRemportesJoueur2 < 6) {
+                scoreJoueur1++;
+        }
+        updateScore();
+    }
+  
+    function joueur2Score() {
+        if (scoreJoueur2 === 3 && scoreJoueur1 === 3) {
+        scoreJoueur2 = 4; // Avantage joueur 2
+        } else if (jeuxRemportesJoueur1 === 6 || jeuxRemportesJoueur2 === 6) {
+            jeuxRemportesJoueur1 === 6;
+        } else if (scoreJoueur2 === 4 && scoreJoueur1 === 3) {
+            scoreJoueur1 = 0; // Gagne le jeu
+            scoreJoueur2 = 0;
+            jeuxRemportesJoueur2++;
+            changeService();
+        } else if (scoreJoueur2 === 3 && scoreJoueur1 === 4) {
+            scoreJoueur1 = 3; // Retour a 40-40
+            scoreJoueur2 = 3;
+        } else if (scoreJoueur2 === 3 && scoreJoueur1 !== 3) {
+            scoreJoueur1 = 0; // Gagne le jeu
+            scoreJoueur2 = 0;
+            jeuxRemportesJoueur2++;
+            changeService();
+        } else if (jeuxRemportesJoueur1 < 6 || jeuxRemportesJoueur2 < 6) {
+            scoreJoueur2++;
+        }
+        updateScore();
+  }
+  
+    function updateScore() {
+        var scoreLabels = ['0', '15', '30', '40', 'AD'];
+        document.getElementById("joueur1").innerText = scoreLabels[scoreJoueur1];
+        document.getElementById("joueur2").innerText = scoreLabels[scoreJoueur2];
+        document.getElementById("jeuxRemportesJoueur1").innerText = jeuxRemportesJoueur1;
+        document.getElementById("jeuxRemportesJoueur2").innerText = jeuxRemportesJoueur2;
+    }
+  </script>
+  
+  </body>
+  </html>
